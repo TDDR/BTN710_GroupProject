@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "<h3>Project Template</h3>\r <p>Features:</p>\r <ul>\r   <li>Node.js and Express.js</li>\r   <li>Database is MongoDB</li>\r   <li>Entity definition for a collection of automobiles</li>\r   <li>Methods that support get all, get one, add new, edit existing, and delete item</li>\r </ul>",
+  "main": "manager.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb-tools": "^1.0.6",
+    "mongoose": "^5.8.9",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Tim Roberts",
+  "license": "ISC"
+}

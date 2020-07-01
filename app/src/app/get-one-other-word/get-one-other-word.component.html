@@ -1,0 +1,63 @@
+
+    <h1>
+        Details about '{{word.wordNonEnglish}}'
+        <div *ngIf="word.wordExpanded">
+            ({{word.wordExpanded}})
+        </div>
+    </h1>
+
+    <h3>This is the ({{word.languageCode}}) for <a [routerLink]="['/get-one-word', word.wordEnglish]">{{ word.wordEnglish }}</a></h3>
+    
+    <div>
+
+        <h4>Data entered by: {{word.authorName}}</h4>
+        <p>Id: {{word._id}}</p>
+        <p>Created on     : {{word.dateCreated}}</p>    
+        <p>Last updated   : {{word.dateRevised}}</p>   
+        
+
+        <h3>Sources</h3>
+
+        <div *ngIf="word.linkAuthoritative ">
+            <a href="{{word.linkAuthoritative }}" target=_blank>Authoritative Link</a>
+        </div>
+
+        <div *ngIf="word.linkWikipedia">
+            <a href="{{word.linkWikipedia}}" target=_blank>Wikipidea Link</a>
+        </div>
+
+        <div *ngIf="word.linkYouTube">
+            <a href="{{word.linkYouTube}}" target=_blank>YouTube Link</a>
+        </div>
+        
+
+        <h3 *ngIf="word.definition.length > 0; else noDef">List of Definitions</h3>
+        <ng-template #noDef><h3>No Definitions for this term</h3></ng-template>
+        <div>
+            <ol>
+                <li *ngFor="let d of word.definition">
+                    <div *ngFor="let def of definitions">
+                        <div *ngIf="d._id == def._id">
+                            {{def.definition}}
+                            
+                            <h4>Click to add a like! 
+                                <app-add-like [definition] = "def" (addDef)="likeDef($event)"></app-add-like>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div>
+            <h4>Was this helpful? 
+                <app-help-yes [wordFromParent]="word" (helpYee)="addY($event)"></app-help-yes>
+                <app-help-no [wordFromParent]="word" (helpNoo)="addN($event)"></app-help-no>
+            </h4>    
+        </div>
+        <div *ngIf="word">
+            <hr>
+            <a routerLink="/add-other-def/{{ word.wordNonEnglish }}" class="btn btn-primary">Add definition</a>&nbsp;
+            <a routerLink="/remove-other-word/{{ word.wordEnglish }}" class="btn btn-danger">Remove Word</a>&nbsp;
+            <a routerLink="/get-all-other-words" class="btn btn-default">Back to list</a>
+          </div>
+    </div>

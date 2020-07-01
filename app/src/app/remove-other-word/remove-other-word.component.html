@@ -1,0 +1,31 @@
+
+    <h1>
+        You are about to remove '{{word.wordNonEnglish}}' 
+        <div *ngIf="word.wordExpanded">
+            ({{word.wordExpanded}})
+        </div>
+    </h1>
+    
+    <div>
+        <p> Id: {{word._id}} </p>
+
+        <h3 *ngIf="word.definition.length > 0; else noDef">List of Definitions</h3>
+        <ng-template #noDef><h3>No Definitions for this term</h3></ng-template>
+        <div>
+            <ol>
+                <li *ngFor="let d of word.definition">
+                    <div *ngFor="let def of definitions">
+                        <div *ngIf="d._id == def._id">
+                            {{def.definition}}
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div *ngIf="word">
+            <hr>
+            <button (click)="remove()" class="btn btn-danger">Remove Word</button>&nbsp;
+            <hr>
+            <a routerLink="/get-all-words" class="btn btn-default">Back to list</a>
+          </div>
+    </div>

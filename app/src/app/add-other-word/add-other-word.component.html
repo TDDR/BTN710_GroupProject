@@ -1,0 +1,125 @@
+<div class="row">
+    <div>
+      <h3>Add a Translation<span *ngIf="term"> for {{term}}</span></h3>
+      <p>Enter data, and click/tap the Save button</p>
+      <form (ngSubmit)='wordSave()' #f='ngForm'>
+  
+        <div  class="col-md-4">
+          <label class="control-label" for="wordNonEnglish">Non Eglish Word to add:</label>
+          <input type="text" class="form-control" id="wordNonEnglish" name="wordNonEnglish"
+            [(ngModel)]="word.wordNonEnglish" required autofocus #wordNonEnglish="ngModel" placeholder="Translation of an exsisting English word">
+            <div *ngIf='wordNonEnglish.invalid && (wordNonEnglish.dirty || wordNonEnglish.touched)' class='alert alert-danger'>
+              Must provide a Non English Word to add
+      </div>
+        </div>
+
+        <div *ngIf="term; else normal">
+          <div class="col-md-4">
+            <label class="control-label" for="wordEnglish">Word in English:</label>
+            <input type="text" class="form-control" id="wordEnglish" name="wordEnglish" readonly
+              [(ngModel)]="word.wordEnglish" #wordEnglish="ngModel" autofocus value="{{term}}" placeholder="autofilled"> <!--Can't get value to populate so added placholder-->
+          </div>
+        </div>
+
+        <ng-template #normal>
+          <div class="col-md-4">
+            <label class="control-label" for="wordEnglish">Word in English:</label>
+            <input type="text" class="form-control" id="wordEnglish" name="wordEnglish" 
+              [(ngModel)]="word.wordEnglish" #wordEnglish="ngModel" required autofocus placeholder="English word must aleady be in database">
+              
+              <div *ngIf='wordEnglish.invalid && (wordEnglish.dirty || wordEnglish.touched)' class='alert alert-danger'>
+                      English translation must be provided
+              </div>
+          </div>
+        </ng-template>
+
+        <div  class="col-md-4">
+          <label class="control-label" for="languageCode">language Code:</label>
+          <input type="text" class="form-control" id="languageCode" name="languageCode" 
+            [(ngModel)]="word.languageCode" #languageCode="ngModel" required autofocus placeholder="fr(french), en(english), ect... ">
+            
+            <div *ngIf='languageCode.invalid && (languageCode.dirty || languageCode.touched)' class='alert alert-danger'>
+                 language Code must be provided
+            </div>
+        </div>
+        
+  
+        <div  class="col-md-12">
+          <label class="control-label" for="wordExpanded">Word Expanded:</label>
+          <input type="text" class="form-control" id="wordExpanded" name="wordExpanded" 
+            [(ngModel)]="word.wordExpanded" placeholder="If word is an acronym. ex: API expands to Application Programming Interface">
+        </div>
+
+
+        <div class="col-md-8">
+          <label class="control-label" for="image">Image:</label>
+          <input class="form-control" id="image" name="image" [(ngModel)]="word.image" placeholder="A url link to an image that represents the word to add">
+        </div>
+
+        <div class="col-md-4">
+          <label class="control-label" for="imageType">Image Type:</label>
+          <input class="form-control" id="imageType" name="imageType" [(ngModel)]="word.imageType" placeholder="jpeg, png, ect... ">
+        </div>
+
+        <div class="col-md-8">
+          <label class="control-label" for="audio">Audio:</label>
+          <input class="form-control" id="audio" name="audio" [(ngModel)]="word.audio" placeholder="A url link to an audio clip of the word">
+        </div>
+
+        <div class="col-md-4">
+          <label class="control-label" for="audioType">Audio Type:</label>
+          <input class="form-control" id="audioType" name="audioType" [(ngModel)]="word.audioType" placeholder="mp3, mp4 ect...">
+        </div>
+
+        <div class="col-md-8">
+          <label class="control-label" for="linkAuthoritative">Authoritative Link:</label>
+          <input class="form-control" id="linkAuthoritative" name="linkAuthoritative" 
+            [(ngModel)]="word.linkAuthoritative" placeholder="url to an offical definition">
+        </div>
+
+        <div class="col-md-8">
+          <label class="control-label" for="linkWikipedia">Wikipedia Link:</label>
+          <input class="form-control" id="linkWikipedia" name="linkWikipedia" 
+            [(ngModel)]="word.linkWikipedia" placeholder="url to the words Wikipedia page">
+        </div>
+
+        <div class="col-md-8">
+          <label class="control-label" for="linkYouTube">YouTube Link:</label>
+          <input class="form-control" id="linkYouTube" name="linkYouTube" 
+            [(ngModel)]="word.linkYouTube" placeholder="url to a YouTube video that explains the word">
+        </div>
+
+        <div class="col-md-12">
+          <label class="control-label" for="authorName">Author's Full Name:</label>
+          <input class="form-control" id="authorName" name="authorName" #authorName="ngModel"
+            [(ngModel)]="word.authorName" required placeholder="Your full name">
+            <div *ngIf='authorName.invalid && (authorName.dirty || authorName.touched)' class='alert alert-danger'>
+              Your name is required
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <label class="control-label" for="fieldOfStudy">Your field of study:</label>
+          <input class="form-control" id="fieldOfStudy" name="fieldOfStudy" placeholder="What programm are you in?"
+            [(ngModel)]="word.fieldOfStudy">
+        </div>
+
+        <div class="col-md-12">
+          <label class="control-label" for="definition">Definition:</label>
+          <textarea class="form-control" id="definition" name="definition" #definition="ngModel"
+          rows="3" [(ngModel)]="word.definition" required placeholder="Write a definition of the word here"></textarea>
+            <div *ngIf='definition.invalid && (definition.dirty || definition.touched)' class='alert alert-danger'>
+              A definition for the word is required
+            </div>
+        </div>
+        
+        <div class= "col-md-4">
+          <hr>
+          <button class="btn btn-primary" type="submit" [disabled]="!f.form.valid">Save</button>&nbsp;
+          <a routerLink="/get-all-other-words" class="btn btn-default">Back to list</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  

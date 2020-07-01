@@ -1,0 +1,56 @@
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <a class="navbar-brand" routerLink="home" routerLinkActive="active">Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a routerLink="about" routerLinkActive="active">About</a></li>
+        <li><a routerLink="contact" routerLinkActive="active">Contact</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">English Word Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="get-all-words" routerLinkActive="active">Get All English Words</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a routerLink="add-word" routerLinkActive="active" >Add English Word</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Non English Word Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="get-all-other-words" routerLinkActive="active">Get All Non English Words</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a routerLink="add-other-word" routerLinkActive="active" >Add Non English Word</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="nav navbar-nav navbar-right">
+       </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<!--
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+        aria-expanded="false">Definition Options <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a routerLink="get-all-definitions">Get All Definitions</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a routerLink="not-found">Edit defintion</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a routerLink="not-found">Delete definition</a></li>
+      </ul>
+    </li>
+  </ul>
+-->

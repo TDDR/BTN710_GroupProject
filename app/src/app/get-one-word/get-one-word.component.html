@@ -1,0 +1,86 @@
+
+    <h1>
+        Details about '{{word.wordEnglish}}'
+        <div *ngIf="word.wordExpanded">
+            ({{word.wordExpanded}})
+        </div>
+    </h1>
+
+    <div>
+        <h4> Translations(and language code):</h4>
+        <ul *ngFor="let w of otherWords">
+            <li *ngIf="w.termEnglishId == word._id">
+                <a [routerLink]="['/get-one-other-word', w.wordNonEnglish]">{{w.wordNonEnglish}}</a>({{w.languageCode}})
+            </li>
+        </ul>
+        <a routerLink="/add-other-word/{{word.wordEnglish}}" class="btn btn-primary">Add Translation</a>&nbsp;
+    <div>
+    
+    <div>
+
+        <p>Data entered by: {{word.authorName}}</p>
+        <p>Id: {{word._id}}</p>
+        <p>Created on     : {{word.dateCreated}}</p>    
+        <p>Last updated   : {{word.dateRevised}}</p>
+        
+        <h3>Aids</h3>
+            <div *ngIf="word.image">
+                <a href="{{word.image}}" target=_blank>Image</a>
+            </div>
+            <div *ngIf="word.audio">
+                <a href="{{word.audio}}" target=_blank>Audio</a>
+            </div>
+
+            <div *ngIf="!word.audio && !word.image">
+                There are no aids provided for this word
+            </div>
+    
+        <h3>Links</h3>
+
+        <div *ngIf="word.linkAuthoritative ">
+            <a href="{{word.linkAuthoritative }}" target=_blank>Authoritative Link</a>
+        </div>
+
+        <div *ngIf="word.linkWikipedia">
+            <a href="{{word.linkWikipedia}}" target=_blank>Wikipidea Link</a>
+        </div>
+
+        <div *ngIf="word.linkYouTube">
+            <a href="{{word.linkYouTube}}" target=_blank>YouTube Link</a>
+        </div>
+
+        <div *ngIf="!word.linkAuthoritative && !word.linkWikipedia && !word.linkYouTube">
+            There are no links provided for this term
+        </div>
+        
+
+        <h3 *ngIf="word.definition.length > 0; else noDef">List of Definitions</h3>
+        <ng-template #noDef><h3>No Definitions for this term</h3></ng-template>
+        <div>
+            <ol>
+                <li *ngFor="let d of word.definition">
+                    <div *ngFor="let def of definitions">
+                        <div *ngIf="d._id == def._id">
+                            {{def.definition}}
+                            
+                            <h4>Click to add a like! 
+                                <app-add-like [definition] = "def" (addDef)="likeDef($event)"></app-add-like>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div>
+            <h4>Was this helpful? 
+                <app-help-yes [wordFromParent]="word" (helpYee)="addY($event)"></app-help-yes>
+                <app-help-no [wordFromParent]="word" (helpNoo)="addN($event)"></app-help-no>
+            </h4>    
+        </div>
+        <div *ngIf="word">
+            <hr>
+            <a routerLink="/add-def/{{ word.wordEnglish }}" class="btn btn-primary">Add definition</a>&nbsp;
+            <a routerLink="/remove-word/{{ word.wordEnglish }}" class="btn btn-danger">Remove Word</a>&nbsp;
+            <a routerLink="/get-all-words" class="btn btn-default">Back to list</a>
+          </div>
+    </div>

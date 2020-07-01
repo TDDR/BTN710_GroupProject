@@ -1,0 +1,25 @@
+<h3>Get All English Words </h3> 
+<div>
+  <input  type="search" placeholder="Search for a word" [(ngModel)]="searchFor">
+</div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Word in English</th>
+        <th>Helpful?</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let w of words | filter : searchFor">
+        <td><a [routerLink]="['../get-one-word', w.wordEnglish]">{{ w.wordEnglish }}</a></td>
+        <td>Yes: {{w.helpYes}} // No: {{w.helpNo}} </td>
+         <td>
+           <a routerLink="/add-def/{{ w.wordEnglish }}" class="btn btn-primary">Add Definition</a>&nbsp;
+           <a routerLink="/remove-word/{{ w.wordEnglish }}" class="btn btn-danger">Remove Word</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <hr>

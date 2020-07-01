@@ -1,0 +1,27 @@
+<h3>Get All Non English Words</h3>
+<div>
+  <input  type="search" placeholder="Find translations for" [(ngModel)]="searchFor">
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Word in English</th>
+      <th>Translation</th>
+      <th>Helpful?</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let w of words | filter : searchFor">
+      <td><a [routerLink]="['../get-one-word', w.wordEnglish]">{{ w.wordEnglish }}</a></td>
+      <td><a [routerLink]="['../get-one-other-word', w.wordNonEnglish]">{{ w.wordNonEnglish }}</a></td>
+      <td>Yes: {{w.helpYes}} // No: {{w.helpNo}} </td>
+      <td>
+         <a routerLink="/add-other-def/{{ w.wordNonEnglish }}" class="btn btn-primary">Add Definition</a>&nbsp;
+         <a routerLink="/remove-other-word/{{ w.wordNonEnglish }}" class="btn btn-danger">Remove Word</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<hr>

@@ -1,0 +1,33 @@
+<div class="row">
+  <div>
+    <h3>Add a definition to '{{word.wordEnglish}}'</h3>
+    <p>Enter definition, and click/tap the Save button</p>
+    <form (ngSubmit)='defSave()' #f='ngForm'>
+
+      <div class="col-md-12">
+        <label class="control-label" for="authorName">Author's Full Name:</label>
+        <input class="form-control" id="authorName" name="authorName" #authorName="ngModel"
+          [(ngModel)]="addDef.authorName" required placeholder="Your full name">
+          <div *ngIf='authorName.invalid && (authorName.dirty || authorName.touched)' class='alert alert-danger'>
+            Your name is required
+          </div>
+      </div>
+      
+      <div class="col-md-12">
+        <label class="control-label" for="definition">Definition:</label>
+        <textarea class="form-control" id="definition" name="definition" #definition="ngModel"
+        rows="5" [(ngModel)]="addDef.definition" required placeholder="Write a definition of the word here"></textarea>
+          <div *ngIf='definition.invalid && (definition.dirty || definition.touched)' class='alert alert-danger'>
+            A definition for the word is required
+          </div>
+      </div>
+              
+      <div class= "col-md-4">
+        <hr>
+        <button class="btn btn-primary" type="submit" [disabled]="!f.form.valid">Save</button>&nbsp;
+        <a routerLink="/get-all-words" class="btn btn-default">Back to list</a>
+      </div>
+
+    </form>
+  </div>
+</div>  
