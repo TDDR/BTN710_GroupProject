@@ -27,6 +27,8 @@ import { HelpNoComponent } from './get-all-words/help-no/help-no.component';
 import {HelpYesComponent} from './get-all-words/help-yes/help-yes.component';
 import { AddLikeComponent } from './get-one-word/add-like/add-like.component';
 import { FilterPipe } from './filter.pipe';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { FilterPipe } from './filter.pipe';
     HelpYesComponent,
     AddLikeComponent,
     FilterPipe,
+    RegisterComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

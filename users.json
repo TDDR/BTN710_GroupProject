@@ -1,0 +1,30 @@
+
+    {
+        "userName": "Tim",
+        "password": "123qwe",
+        "email": "t@t.com",
+        "firstName": "Tim",
+        "lastName": "Rob",
+        "role": "owner",
+        "joinedOn": "06-July-2020"
+    }
+
+    {
+        "userName": "G",
+        "password": "123",
+        "email": "g@g.com",
+        "firstName": "Ge",
+        "lastName": "Gee",
+        "role": "guest",
+        "joinedOn": "06-July-2020"
+    }
+
+    {
+        "userName": "M",
+        "password": "qwe",
+        "email": "u@u.com",
+        "firstName": "Me",
+        "lastName": "Mo",
+        "role": "member",
+        "joinedOn": "06-July-2020"
+    }

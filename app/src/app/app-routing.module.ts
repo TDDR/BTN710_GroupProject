@@ -6,6 +6,9 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from "./contact/contact.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 
+import { RegisterComponent } from "./register/register.component";
+import { LoginComponent } from "./login/login.component";
+
 import {GetAllWordsComponent} from "./get-all-words/get-all-words.component";
 import {GetOneWordComponent} from "./get-one-word/get-one-word.component";
 import {AddWordComponent} from "./add-word/add-word.component"
@@ -23,6 +26,9 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
 
   { path: 'get-all-words', component: GetAllWordsComponent },
   { path: 'get-one-word/:word', component: GetOneWordComponent },

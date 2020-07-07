@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 // Import data model classes, for example...
-import { Word, Definition, WordToAdd, OtherWord, OtherWordToAdd } from "./data-classes";
+import { Word, Definition, WordToAdd, OtherWord, OtherWordToAdd, addUser, User } from "./data-classes";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,8 @@ export class DataManagerService {
   constructor(private http: HttpClient) { }
 
   // Base URL for the web API
-  private url: string = 'https://young-scrubland-01140.herokuapp.com';
+  //private url: string = 'https://young-scrubland-01140.herokuapp.com';
+  private url: string = 'https://localhost:8080';
 
   // Options object for POST and PUT requests
   private httpOptions = {
@@ -21,6 +22,12 @@ export class DataManagerService {
       'Content-Type': 'application/json'
     })
   };
+
+
+  //******************* Authenticate/Authorize methods *********************
+  addUser(user: addUser){
+    return this.http.post<User>(`${this.url}/register`, user, this.httpOptions)
+  }
 
   //******************* Callable Word methods *********************
 

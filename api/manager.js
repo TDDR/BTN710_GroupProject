@@ -7,10 +7,11 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-// Data entities; the standard format is:
-const wordSchema = require('./wordSchema.js');
-const otherWordSchema =  require('./otherWordSchema.js')
-const definitionSchema = require('./definitionSchema.js')
+// Data entities
+const wordSchema = require('./schemas/wordSchema.js');
+const otherWordSchema =  require('./schemas/otherWordSchema.js')
+const definitionSchema = require('./schemas/definitionSchema.js')
+const userSchema = require('./schemas/userSchema.js')
 
 
 // ################################################################################
@@ -20,8 +21,9 @@ module.exports = function () {
 
   // Collection properties, which get their values upon connecting to the database
   let Words;
-  let OtherWords
+  let OtherWords;
   let Definitions;
+  let Users;
 
   return {
 
@@ -46,12 +48,98 @@ module.exports = function () {
           Words = db.model("words", wordSchema, "words");
           OtherWords = db.model("otherWords", otherWordSchema, "otherWords");
           Definitions = db.model("definitions", definitionSchema, "definitions");
+          Users = db.model('users', userSchema, 'users');
           resolve();
         });
       });
     },
 
+    // ############################################################
+    // Authorize/Authenticate requests
 
+    getAllUsers: function () {
+      return new Promise(function (resolve, reject) {
+
+        // Fetch all documents
+        Users.find()
+          .exec((error, items) => {
+            if (error) {
+              // Query error
+              return reject(error.message);
+            }
+            // Found, a collection will be returned
+            return resolve(items);
+          });
+      })
+    },
+
+    getUserByUserName: function (name) {
+      return new Promise(function (resolve, reject) {
+    
+        // Find one specific document
+        Users.findOne({userName: name})
+             .exec((error, item) => {
+          if (error) {
+            // Find/match is not found
+            return reject(error.message);
+          }
+          // Check for an item
+          if (item) {
+            // Found, one object will be returned
+            return resolve(item);
+          } else {
+            return reject('Not found');
+          }
+        });
+      })
+    },
+
+    addUser: function (newUser) {
+      return new Promise(function (resolve, reject) {
+
+        //Cheacking to see if word exsists
+        Users.find({userName: newUser.userName}, (error, item) => {
+          
+          //if it's not in database then add it
+          if(item.length === 0){
+            Users.create(newUser, (error, item) => {
+              if (error) {
+                // Cannot add item
+                return reject(error.message);
+              }
+              //Added object will be returned
+              return resolve(item);
+            });
+          }
+          else
+            return reject("***Cannot Perform Operation, word already in database***")
+        })
+      })
+    },
+
+    userLogin: function (user) {
+      return new Promise(function (resolve, reject) {
+    
+        // Find one specific document
+        Users.findOne({userName: user.userName})
+             .exec((error, item) => {
+          if (error) {
+            // Find/match is not found
+            return reject(error.message);
+          }
+          else{
+            if(!item){
+              resolve("Invalid user name")
+            } else
+            if(user.password !== item.password){
+              resolve("Invalid password")
+            } else{
+              resolve(item)
+            }
+          }
+        });
+      })
+    },
 
     // ############################################################
     // word requests

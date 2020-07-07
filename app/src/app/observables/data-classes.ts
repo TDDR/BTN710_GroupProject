@@ -126,3 +126,25 @@ export class OtherWords{
   definition: [Definition];
   termEnglishId: string;
 }
+
+export class addUser {
+  constructor(
+    public userName: string,
+    public password: string,
+    public email: string,
+    public firstName: string,
+    public lastName: string,
+    public role: string,
+    public joinedOn: Date,
+    ) {}  
+}
+
+export class User{
+    userName: string;
+    password: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+    joinedOn: Date;  
+}

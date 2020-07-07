@@ -1,0 +1,54 @@
+<div class="row">
+  <div>
+    <h3>Register a new user</h3>
+    <p>Enter data, and click/tap the Save button</p>
+    <form (ngSubmit)='addUser()' #f='ngForm'>
+
+      <div  class="col-md-4">
+        <label class="control-label" for="userName">User name:</label>
+        <input type="text" class="form-control" id="userName" name="userName" 
+          [(ngModel)]="user.userName" #userName="ngModel" required autofocus placeholder="Name to use when logged in">
+         
+          <div *ngIf='userName.invalid && (userName.dirty || userName.touched)' class='alert alert-danger'>
+                  User name is required
+          </div>
+      </div>
+
+      <div  class="col-md-4">
+        <label class="control-label" for="password">Password:</label>
+        <input type="text" class="form-control" id="password" name="password" 
+          [(ngModel)]="user.password" #password="ngModel" required autofocus placeholder="Do not share your password with anyone">
+         
+          <div *ngIf='password.invalid && (password.dirty || password.touched)' class='alert alert-danger'>
+                  Password is required
+          </div>
+      </div>
+
+      <br><br><br>
+
+      <div  class="col-md-4">
+        <label class="control-label" for="email">Email:</label>
+        <input type="text" class="form-control" id="email" name="email" 
+          [(ngModel)]="user.email" #email="ngModel" required autofocus placeholder="address to contact you at">
+         
+          <div *ngIf='email.invalid && (email.dirty || email.touched)' class='alert alert-danger'>
+                  Email is required
+          </div>
+      </div>
+
+      <br><br><br>
+
+      <div  class="col-md-4">
+        <label class="control-label" for="firstName">First name:</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" 
+          [(ngModel)]="user.firstName" #firstName="ngModel" required autofocus placeholder="Given name">
+      </div>
+
+      <div  class="col-md-4">
+        <label class="control-label" for="lastName">Last name:</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" 
+          [(ngModel)]="user.lastName" #lastName="ngModel" required autofocus placeholder="Family name">
+      </div>
+    </form>
+  </div>
+</div>

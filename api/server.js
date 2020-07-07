@@ -31,7 +31,54 @@ app.get("/", (req, res) => {
 });
 
 // ################################################################################
-// Request handlers for EnglishEmbededWords
+// Request handlers for Authentication and Authorization
+
+app.post('/register', (req, res) =>{
+  m.addUser(req.body)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ "message": error });
+    })
+});
+
+app.post('/login', (req, res) =>{
+  m.userLogin(req.body)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ "message": error });
+    })
+});
+
+// Get all users
+app.get("/users", (req, res) => {  
+  m.getAllUsers()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ "message": error });
+    })
+});
+
+// Get user by user name
+app.get("/users/:user", (req, res) => {
+  // Call the manager method
+  m.getUserByUserName(req.params.user)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch(() => {
+      res.status(404).json({ "message": "Resource not found from Get One User" });
+    })
+});
+
+
+// ################################################################################
+// Request handlers for English Words
 
 // Get all words
 app.get("/words", (req, res) => {
