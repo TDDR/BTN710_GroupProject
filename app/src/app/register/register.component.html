@@ -41,14 +41,21 @@
       <div  class="col-md-4">
         <label class="control-label" for="firstName">First name:</label>
         <input type="text" class="form-control" id="firstName" name="firstName" 
-          [(ngModel)]="user.firstName" #firstName="ngModel" required autofocus placeholder="Given name">
+          [(ngModel)]="user.firstName" #firstName="ngModel" placeholder="Given name">
       </div>
 
       <div  class="col-md-4">
         <label class="control-label" for="lastName">Last name:</label>
         <input type="text" class="form-control" id="lastName" name="lastName" 
-          [(ngModel)]="user.lastName" #lastName="ngModel" required autofocus placeholder="Family name">
+          [(ngModel)]="user.lastName" #lastName="ngModel" placeholder="Family name">
       </div>
+
+
+      <br><br><hr>
+
+      <button class="btn btn-primary" type="submit" [disabled]="!f.form.valid">Register</button>&nbsp;
+      <a class="btn btn-danger" routerLink='/home'>Cancel registration</a>
+
     </form>
   </div>
 </div>

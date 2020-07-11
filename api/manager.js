@@ -1,3 +1,8 @@
+// ################################################################################
+// Encryption operations setup
+
+const scrypt = require('../node-scrypt')
+const scryptParams = {N: 1, r:1, p:1}
 
 // ################################################################################
 // Data service operations setup
@@ -57,43 +62,6 @@ module.exports = function () {
     // ############################################################
     // Authorize/Authenticate requests
 
-    getAllUsers: function () {
-      return new Promise(function (resolve, reject) {
-
-        // Fetch all documents
-        Users.find()
-          .exec((error, items) => {
-            if (error) {
-              // Query error
-              return reject(error.message);
-            }
-            // Found, a collection will be returned
-            return resolve(items);
-          });
-      })
-    },
-
-    getUserByUserName: function (name) {
-      return new Promise(function (resolve, reject) {
-    
-        // Find one specific document
-        Users.findOne({userName: name})
-             .exec((error, item) => {
-          if (error) {
-            // Find/match is not found
-            return reject(error.message);
-          }
-          // Check for an item
-          if (item) {
-            // Found, one object will be returned
-            return resolve(item);
-          } else {
-            return reject('Not found');
-          }
-        });
-      })
-    },
-
     addUser: function (newUser) {
       return new Promise(function (resolve, reject) {
 
@@ -102,13 +70,20 @@ module.exports = function () {
           
           //if it's not in database then add it
           if(item.length === 0){
-            Users.create(newUser, (error, item) => {
-              if (error) {
-                // Cannot add item
-                return reject(error.message);
-              }
-              //Added object will be returned
-              return resolve(item);
+
+          scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
+              .then((result) => {
+                newUser.password = result
+                
+                Users.create(newUser, (error, item) => {
+                  if (error) {
+                    // Cannot add item
+                    return reject(error.message);
+                  }
+                  //Added object will be returned
+                  return resolve(item);
+                });
+              }, function(err){
             });
           }
           else
@@ -127,19 +102,24 @@ module.exports = function () {
             // Find/match is not found
             return reject(error.message);
           }
-          else{
+          else
             if(!item){
-              resolve("Invalid user name")
-            } else
-            if(user.password !== item.password){
-              resolve("Invalid password")
+              reject("Invalid user name")
             } else{
-              resolve(item)
+    
+              scrypt.verifyKdf(Buffer.from(item.password, 'ascii'),
+                               Buffer.from(user.password, 'ascii')) 
+                 .then((res) => { 
+                    if(!res)
+                      reject("Invalid password")
+                    else      
+                      resolve({item})
+                  
+              }).catch((error) => {reject("verifyKdf Failed")})
             }
           }
-        });
-      })
-    },
+        );
+      })},
 
     // ############################################################
     // word requests

@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a routerLink="about" routerLinkActive="active">About</a></li>
-        <li><a routerLink="contact" routerLinkActive="active">Contact</a></li>
+        <li><a *ngIf="manager.loggedIn()" routerLink="contact" routerLinkActive="active">Contact</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
             aria-expanded="false">English Word Options <span class="caret"></span></a>
@@ -33,8 +33,9 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a routerLink="login" routerLinkActive="active" >Login</a></li>
-        <li><a routerLink="register" routerLinkActive="active" >Register</a></li>
+        <li><a *ngIf="!manager.loggedIn()" routerLink="login" routerLinkActive="active" >Login</a></li>
+        <li><a *ngIf="!manager.loggedIn()" routerLink="register" routerLinkActive="active" >Register</a></li>
+        <li><a *ngIf="manager.loggedIn()" style="cursor: pointer" (click)="manager.logOut()">Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

@@ -14,18 +14,20 @@ export class RegisterComponent implements OnInit {
     constructor(private manager: DataManagerService,
                 private router: Router) { }
   
-    user =  new addUser("","","","","","", new Date());
+    user =  new addUser("","","","","","member", new Date());
     newUser = new User();  
   
     ngOnInit(): void {
     }
         // Form submit button handler
         addUser(): void {
-  
+
           // Send request
-          this.manager.addUser(this.user).subscribe(data => this.newUser = data);
-      
-          this.router.navigate(["/login"]);
+          this.manager.addUser(this.user)
+            .subscribe(data => {              
+              localStorage.setItem('token', data['token'])
+              this.router.navigate(["/home"]);
+            });
         }
   }
   

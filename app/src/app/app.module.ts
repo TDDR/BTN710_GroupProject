@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from '@angular/forms'
@@ -27,8 +27,12 @@ import { HelpNoComponent } from './get-all-words/help-no/help-no.component';
 import {HelpYesComponent} from './get-all-words/help-yes/help-yes.component';
 import { AddLikeComponent } from './get-one-word/add-like/add-like.component';
 import { FilterPipe } from './filter.pipe';
+
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
+import {DataManagerService} from './observables/data-manager.service'
+import {InterceptTokenService} from "./intercept-token.service";
 
 @NgModule({
   declarations: [
@@ -61,7 +65,12 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [DataManagerService, AuthGuard, 
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: InterceptTokenService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { Router } from '@angular/router';
 // Import data model classes, for example...
 import { Word, Definition, WordToAdd, OtherWord, OtherWordToAdd, addUser, User } from "./data-classes";
 
@@ -10,11 +11,12 @@ import { Word, Definition, WordToAdd, OtherWord, OtherWordToAdd, addUser, User }
 export class DataManagerService {
 
   // Inject the HttpClient
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private router: Router) { }
 
   // Base URL for the web API
-  //private url: string = 'https://young-scrubland-01140.herokuapp.com';
-  private url: string = 'https://localhost:8080';
+  //private url: string = 'https://btn710-api.herokuapp.com';
+  private url: string = 'http://localhost:8080';
 
   // Options object for POST and PUT requests
   private httpOptions = {
@@ -27,6 +29,23 @@ export class DataManagerService {
   //******************* Authenticate/Authorize methods *********************
   addUser(user: addUser){
     return this.http.post<User>(`${this.url}/register`, user, this.httpOptions)
+  }
+
+  loginUser(user: User){
+    return this.http.post<User>(`${this.url}/login`, user, this.httpOptions)
+  }
+
+  loggedIn(){
+    return !!localStorage.getItem('token')
+  }
+
+  logOut(){
+    localStorage.removeItem("token")
+    this.router.navigate(['/home'])
+  }
+
+  getToken() {
+    return localStorage.getItem('token')
   }
 
   //******************* Callable Word methods *********************

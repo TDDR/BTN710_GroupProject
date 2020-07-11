@@ -1,4 +1,4 @@
-//Heroku link: https://young-scrubland-01140.herokuapp.com/
+//Heroku link: https://btn710-api.herokuapp.com/
 
 // ################################################################################
 // Web service setup
@@ -7,6 +7,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require('body-parser');
+const jwt = require("jsonwebtoken")
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
@@ -36,7 +37,11 @@ app.get("/", (req, res) => {
 app.post('/register', (req, res) =>{
   m.addUser(req.body)
     .then((data) => {
-      res.json(data);
+
+      let payload = { subject: data._id}
+      let token = jwt.sign(payload, 'superSecretKey')
+      
+      res.json({token});
     })
     .catch((error) => {
       res.status(500).json({ "message": error });
@@ -46,36 +51,37 @@ app.post('/register', (req, res) =>{
 app.post('/login', (req, res) =>{
   m.userLogin(req.body)
     .then((data) => {
-      res.json(data);
+
+      let payload = { subject: data._id}
+      let token = jwt.sign(payload, 'superSecretKey')
+      
+      res.json({token});
     })
     .catch((error) => {
       res.status(500).json({ "message": error });
     })
 });
 
-// Get all users
-app.get("/users", (req, res) => {  
-  m.getAllUsers()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((error) => {
-      res.status(500).json({ "message": error });
-    })
-});
+function verifyToken(req, res, next){
+  
+  if (!req.headers.authorization){
+    return res.status(401).send('Unauthorized request')
+  }
+  let token = req.headers.authorization.split(' ')[1]
 
-// Get user by user name
-app.get("/users/:user", (req, res) => {
-  // Call the manager method
-  m.getUserByUserName(req.params.user)
-    .then((data) => {
-      res.json(data);
-    })
-    .catch(() => {
-      res.status(404).json({ "message": "Resource not found from Get One User" });
-    })
-});
+  if(token === null) {
+    return res.status(401).send('Unauthorized request')
+  }
+  let payload = jwt.verify(token, 'superSecretKey')
+  
+  if(!payload) {
+    return res.status(401).send('Unauthorized request')
+  }
 
+  req.userId = payload.subject
+  next()
+
+}
 
 // ################################################################################
 // Request handlers for English Words
@@ -285,7 +291,7 @@ app.delete("/definitions/:id", (req, res) => {
 // Request handlers for other words
 
 // Get all otherWords
-app.get("/otherWords", (req, res) => {
+app.get("/otherWords", verifyToken, (req, res) => {
   
   m.otherWordGetAll()
     .then((data) => {
@@ -297,7 +303,7 @@ app.get("/otherWords", (req, res) => {
 });
 
 // Get one otherWord by Id
-app.get("/otherWords/:id", (req, res) => {
+app.get("/otherWords/:id", verifyToken, (req, res) => {
 
   m.otherWordGetById(req.params.id)
     .then((data) => {
@@ -309,7 +315,7 @@ app.get("/otherWords/:id", (req, res) => {
 });
 
 // Get one otherWord by word English
-app.get("/otherWords/get/:word", (req, res) => {
+app.get("/otherWords/get/:word", verifyToken, (req, res) => {
 
   m.otherWordGetByWord(req.params.word)
     .then((data) => {
@@ -321,7 +327,7 @@ app.get("/otherWords/get/:word", (req, res) => {
 });
 
 // Add new otherWord with definition
-app.post("/otherWords", (req, res) => {
+app.post("/otherWords", verifyToken, (req, res) => {
 
   let newDef = {authorName: req.body.authorName,
     dateCreated: new Date().toLocaleDateString(),
@@ -353,7 +359,7 @@ app.post("/otherWords", (req, res) => {
   });
 
 //Edit otherWord to add a defintion
-app.put("/otherWords/addDef/:word", (req, res) => {
+app.put("/otherWords/addDef/:word", verifyToken, (req, res) => {
 
   let newDef = {authorName: req.body.authorName,
     dateCreated: new Date().toLocaleDateString(),
@@ -379,7 +385,7 @@ app.put("/otherWords/addDef/:word", (req, res) => {
 });
 
 //incrememt helpYes
-app.put("/otherWords/helpYes/:word", (req, res) => {
+app.put("/otherWords/helpYes/:word", verifyToken, (req, res) => {
   // Call the manager method
   m.otherWordHelpYes(req.params.word)
     .then((data) => {
@@ -391,7 +397,7 @@ app.put("/otherWords/helpYes/:word", (req, res) => {
 });
 
 //incrememt helpNo
-app.put("/otherWords/helpNo/:word", (req, res) => {
+app.put("/otherWords/helpNo/:word", verifyToken, (req, res) => {
   // Call the manager method
   m.otherWordHelpNo(req.params.word)
     .then((data) => {
@@ -403,7 +409,7 @@ app.put("/otherWords/helpNo/:word", (req, res) => {
 });
 
 // Delete a otherWord
-app.delete("/otherWords/:word", (req, res) => {
+app.delete("/otherWords/:word", verifyToken, (req, res) => {
   // Call the manager method
   m.otherWordDelete(req.params.word)
     .then(() => {

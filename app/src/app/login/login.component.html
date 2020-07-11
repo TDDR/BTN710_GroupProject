@@ -1,3 +1,38 @@
-<p>
-  login works!
-</p>
+<div class="row">
+  <div>
+    <h3>Login</h3>
+    <p>Enter data, and click/tap the Save button</p>
+    <form (ngSubmit)='login()' #f='ngForm'>
+
+      <div  class="col-md-8">
+        <label class="control-label" for="userName">User name:</label>
+        <input type="text" class="form-control" id="userName" name="userName" 
+          [(ngModel)]="loginData.userName" #userName="ngModel" required autofocus placeholder="Name to use when logged in">
+         
+          <div *ngIf='userName.invalid && (userName.dirty || userName.touched)' class='alert alert-danger'>
+                  User name is required
+          </div>
+      </div>
+      
+      <div  class="col-md-8">
+        <label class="control-label" for="password">Password:</label>
+        <input type="text" class="form-control" id="password" name="password" 
+          [(ngModel)]="loginData.password" #password="ngModel" required autofocus placeholder="Do not share your password with anyone">
+         
+          <div *ngIf='password.invalid && (password.dirty || password.touched)' class='alert alert-danger'>
+                  Password is required
+          </div>
+      </div>
+      
+      <br><br><br><br><br><br><hr>
+
+      <button class="btn btn-primary" type="submit" [disabled]="!f.form.valid">Login</button>&nbsp;
+      <a class="btn btn-danger" routerLink='/home'>Return to homepage</a>
+
+    </form>
+  </div>
+</div>
+
+<!-- <br>
+<h4>Data from the form:</h4>
+<p><code>{{ loginData | json }}</code></p> -->
