@@ -11,17 +11,17 @@
 
     {
         "userName": "G",
-        "password": "123",
+        "password": "pass123",
         "email": "g@g.com",
         "firstName": "Ge",
         "lastName": "Gee",
-        "role": "guest",
+        "role": "member",
         "joinedOn": "06-July-2020"
     }
 
     {
         "userName": "M",
-        "password": "qwe",
+        "password": "pa$$word",
         "email": "u@u.com",
         "firstName": "Me",
         "lastName": "Mo",

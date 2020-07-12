@@ -73,7 +73,7 @@ module.exports = function () {
 
           scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
               .then((result) => {
-                newUser.password = result
+                newUser.password = result.toString('binary')
                 
                 Users.create(newUser, (error, item) => {
                   if (error) {
@@ -102,22 +102,22 @@ module.exports = function () {
             // Find/match is not found
             return reject(error.message);
           }
-          else
+          else{
             if(!item){
               reject("Invalid user name")
             } else{
-    
               scrypt.verifyKdf(Buffer.from(item.password, 'ascii'),
                                Buffer.from(user.password, 'ascii')) 
                  .then((res) => { 
+
                     if(!res)
-                      reject("Invalid password")
+                      reject({message: "Invalid password"})
                     else      
                       resolve({item})
                   
-              }).catch((error) => {reject("verifyKdf Failed")})
+              }).catch((error) => {reject(error.message)})
             }
-          }
+          }}
         );
       })},
 
