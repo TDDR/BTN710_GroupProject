@@ -1,8 +1,9 @@
 // ################################################################################
 // Encryption operations setup
 
-const scrypt = require('../node-scrypt')
+const scrypt = require('scrypt')
 const scryptParams = {N: 1, r:1, p:1}
+const pepper = "Ax#o89LmL&ap"
 
 // ################################################################################
 // Data service operations setup
@@ -71,19 +72,21 @@ module.exports = function () {
           //if it's not in database then add it
           if(item.length === 0){
 
-          scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
-              .then((result) => {
-                newUser.password = result.toString('binary')
-                
-                Users.create(newUser, (error, item) => {
-                  if (error) {
-                    // Cannot add item
-                    return reject(error.message);
-                  }
-                  //Added object will be returned
-                  return resolve(item);
-                });
-              }, function(err){
+            newUser.password = pepper + newUser.password 
+
+            scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
+                .then((result) => {
+                  newUser.password = result.toString('binary')
+                  
+                  Users.create(newUser, (error, item) => {
+                    if (error) {
+                      // Cannot add item
+                      return reject(error.message);
+                    }
+                    //Added object will be returned
+                    return resolve(item);
+                  });
+                }, function(err){
             });
           }
           else
@@ -106,6 +109,9 @@ module.exports = function () {
             if(!item){
               reject("Invalid user name")
             } else{
+
+              user.password = pepper + user.password 
+
               scrypt.verifyKdf(Buffer.from(item.password, 'ascii'),
                                Buffer.from(user.password, 'ascii')) 
                  .then((res) => { 
