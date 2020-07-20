@@ -1,9 +1,11 @@
 // ################################################################################
 // Encryption operations setup
 
-const scrypt = require('scrypt')
-const scryptParams = {N: 1, r:1, p:1}
-const pepper = "Ax#o89LmL&ap"
+const md5 = require('md5')
+
+// const scrypt = require('scrypt')
+// const scryptParams = {N: 1, r:1, p:1}
+// const pepper = "Ax#o89LmL&ap"
 
 // ################################################################################
 // Data service operations setup
@@ -72,22 +74,35 @@ module.exports = function () {
           //if it's not in database then add it
           if(item.length === 0){
 
-            newUser.password = pepper + newUser.password 
+            //*** For md5 ***
+            newUser.password = md5(newUser.password)
 
-            scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
-                .then((result) => {
-                  newUser.password = result.toString('binary')
+            Users.create(newUser, (error, item) => {
+                if (error) {
+                  // Cannot add item
+                  return reject(error.message);
+                } 
+                //Added object will be returned
+                return resolve(item);
+              });
+
+            //*** For Scrypt ***
+            // newUser.password = pepper + newUser.password 
+
+            // scrypt.kdf(Buffer.from(newUser.password, "ascii"), scryptParams)
+            //     .then((result) => {
+            //       newUser.password = result.toString('binary')
                   
-                  Users.create(newUser, (error, item) => {
-                    if (error) {
-                      // Cannot add item
-                      return reject(error.message);
-                    }
-                    //Added object will be returned
-                    return resolve(item);
-                  });
-                }, function(err){
-            });
+            //       Users.create(newUser, (error, item) => {
+            //         if (error) {
+            //           // Cannot add item
+            //           return reject(error.message);
+            //         }
+            //         //Added object will be returned
+            //         return resolve(item);
+            //       });
+            //     }, function(err){
+            // });
           }
           else
             return reject("***Cannot Perform Operation, word already in database***")
@@ -110,22 +125,49 @@ module.exports = function () {
               reject("Invalid user name")
             } else{
 
-              user.password = pepper + user.password 
+              //*** For md5 ***
+              var compare = md5(user.password)
 
-              scrypt.verifyKdf(Buffer.from(item.password, 'ascii'),
-                               Buffer.from(user.password, 'ascii')) 
-                 .then((res) => { 
+              if (item.password !== compare){
+                reject({message: "Invalid password"})
+              }
+              else{      
+                resolve({item})
+              }
 
-                    if(!res)
-                      reject({message: "Invalid password"})
-                    else      
-                      resolve({item})
+              //*** For Scrypt ***
+              // user.password = pepper + user.password 
+
+              // scrypt.verifyKdf(Buffer.from(item.password, 'ascii'),
+              //                  Buffer.from(user.password, 'ascii')) 
+              //    .then((res) => { 
+
+              //       if(!res)
+              //         reject({message: "Invalid password"})
+              //       else      
+              //         resolve({item})
                   
-              }).catch((error) => {reject(error.message)})
+              // }).catch((error) => {reject(error.message)})
             }
           }}
         );
       })},
+
+      getAllUsers: function () {
+        return new Promise(function (resolve, reject) {
+  
+          // Fetch all documents
+          Users.find()
+            .exec((error, items) => {
+              if (error) {
+                // Query error
+                return reject(error.message);
+              }
+              // Found, a collection will be returned
+              return resolve(items);
+            });
+        })
+      },
 
     // ############################################################
     // word requests

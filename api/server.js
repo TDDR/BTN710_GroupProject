@@ -80,8 +80,19 @@ function verifyToken(req, res, next){
 
   req.userId = payload.subject
   next()
+};
 
-}
+// Get all words
+app.get("/users", (req, res) => {
+  
+  m.getAllUsers()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ "message": error });
+    })
+});
 
 // ################################################################################
 // Request handlers for English Words
