@@ -114,7 +114,7 @@ module.exports = function () {
       return new Promise(function (resolve, reject) {
     
         // Find one specific document
-        Users.findOne({userName: user.userName})
+        Users.findOne({userName: { $eq: user.userName }})
              .exec((error, item) => {
           if (error) {
             // Find/match is not found
